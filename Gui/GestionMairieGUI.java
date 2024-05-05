@@ -1,19 +1,9 @@
 package Gui;
+
 import javax.swing.*;
 
 import mairie.GestionMairie;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.LocalDate;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,11 +44,11 @@ public class GestionMairieGUI extends JFrame {
 
         JButton nouveauNeButton = new JButton("Nouveau-né");
         nouveauNeButton.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		nouveauNeDialog();
-        	}});
-
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nouveauNeDialog();
+            }
+        });
         panel.add(nouveauNeButton);
 
         JButton afficherPersonnesButton = new JButton("Afficher les personnes");
@@ -100,6 +90,7 @@ public class GestionMairieGUI extends JFrame {
         LocalDate dateNaissance = LocalDate.parse(dateStr);
         gestionMairie.saisiePersonne(nom, prenom, sexe, dateNaissance, "célibataire");
     }
+
     private void nouveauNeDialog() {
         JTextField parent1Field = new JTextField(5);
         JTextField parent2Field = new JTextField(5);
@@ -116,7 +107,8 @@ public class GestionMairieGUI extends JFrame {
         if (result == JOptionPane.OK_OPTION) {
             int parent1ID = Integer.parseInt(parent1Field.getText());
             int parent2ID = Integer.parseInt(parent2Field.getText());
-            
+
+            // Passer les identifiants des parents à la méthode pour afficher la boîte de dialogue des informations du nouveau-né
             nouveauNeInfoDialog(parent1ID, parent2ID);
         }
     }
@@ -139,16 +131,15 @@ public class GestionMairieGUI extends JFrame {
 
         int result = JOptionPane.showConfirmDialog(null, nouveauNePanel, "Saisir les informations du nouveau-né", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
-            // Récupérer les valeurs saisies
+            // Récupérer les informations saisies et les passer à la méthode nouveauNe de GestionMairie
             String nom = nomField.getText();
             String prenom = prenomField.getText();
             char sexe = sexeField.getText().charAt(0);
             String dateStr = dateNaissanceField.getText();
             LocalDate dateNaissance = LocalDate.parse(dateStr);
-            gestionMairie.nouveauNe(parent1ID,parent2ID);
             
-            // Fermer la boîte de dialogue
-            ((Window)nouveauNePanel.getTopLevelAncestor()).dispose();
+            // Appeler la méthode nouveauNe de GestionMairie avec les informations du nouveau-né
+            gestionMairie.nouveauNe(parent1ID, parent2ID, nom, prenom, sexe, dateNaissance);
         }
     }
 
@@ -156,4 +147,3 @@ public class GestionMairieGUI extends JFrame {
         new GestionMairieGUI();
     }
 }
-

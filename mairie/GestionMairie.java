@@ -10,9 +10,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class GestionMairie implements Serializable{
 	 private List<Personne> liste = new ArrayList<>();
-
+	 private int dernierId = 0; // Nouvelle variable pour stocker le dernier ID utilisé
 	   public void addPersonne(Personne personne) {
 	        if (personne != null) {
 	            liste.add(personne);
@@ -67,33 +68,27 @@ public class GestionMairie implements Serializable{
 	        }
 	    }
 
-	    public void nouveauNe(int id1, int id2) {
+	    public void nouveauNe(int id1, int id2, String nom, String prenom, char sexe, LocalDate dateNaissance) {
 	        Personne personne1 = getPersonById(id1);
 	        Personne personne2 = getPersonById(id2);
 
 	        if (personne1 != null && personne2 != null) {
-	            Scanner input = new Scanner(System.in);
-	            System.out.println("Entrez le nom du nouveau-né : ");
-	            String nom = input.nextLine();
-	            System.out.println("Entrez le prénom du nouveau-né : ");
-	            String prenom = input.nextLine();
-	            System.out.println("Entrez le sexe du nouveau-né (M/F) : ");
-	            char sexe = input.nextLine().charAt(0);
-	            System.out.println("Entrez la date de naissance du nouveau-né (YYYY-MM-DD) : ");
-	            String dateNaissanceStr = input.nextLine();
-	            LocalDate dateNaissance = LocalDate.parse(dateNaissanceStr);
 	            // Générer un identifiant unique pour le nouveau-né
-	            long idNouveauNe = liste.size() + 1; // Peut être remplacé par un mécanisme plus robuste
+	            int idNouveauNe = ++dernierId;
+	            
 	            // Créer la personne nouveau-né
 	            Personne nouveauNe = new Personne(nom, prenom, "célibataire", sexe, dateNaissance);
+	            nouveauNe.setId(idNouveauNe);
 	            nouveauNe.setIdConjoint(0);
+	            
 	            // Ajouter le nouveau-né à la liste des personnes
-	            liste.add(nouveauNe);
+	            addPersonne(nouveauNe);
 	            System.out.println("Nouveau-né ajouté avec succès !");
 	        } else {
 	            System.out.println("Les deux parents sont introuvables !");
 	        }
 	    }
+
 
 	    public void affichePersonne(int id) {
 	        Personne person = getPersonById(id);
@@ -144,4 +139,3 @@ public class GestionMairie implements Serializable{
         }
     }
 }
-
